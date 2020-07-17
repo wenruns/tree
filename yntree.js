@@ -3,33 +3,38 @@
         uniqueFlag = Math.ceil(Math.random() * 100) + '-' + (new Date()).valueOf(), loadCss = true;
 
     /**
-     * 树状结构复选框功能对象
+     * 树状结构复选框功能
+     *
      * @param ele                   树状结构挂载元素
-     * @param options               树状结构数据
-     * @param hideCheckBox          是否隐藏复选框
-     * @param spread                是否默认展开树状结构
-     * @param spreadChecked         是否默认展开选中的树状结构
+     *
+     * @param options               参数
+     *
      * @constructor
      */
-    function YnTree(ele, options, {
-        hideCheckBox = false,
-        spread = false,
-        spreadChecked = true,
-    } = {}) {
+    function YnTree({
+                        ele,
+                        onchange = null,             // 复选看发送变化事件
+                        checkStrictly = true,        // 是否父子互相关联，默认true
+                        data = [],                   // 树状结构数据集
+                        hideCheckBox = false,    //是否隐藏复选框
+                        spread = false,          //是否默认展开树状结构
+                        spreadChecked = true,    // 是否默认展开选中的树状结构
+                    }) {
         if (!ele || !ele.nodeName || ele.nodeType != 1) {
             throw"YnTree 第一个参数必须是一个元素！"
         }
-        this.configs = {
-            hideCheckBox,
-            spreadChecked,
-            spread,
-        };
         this.ele = ele;
-        var type = YnTree.getType(options);
-        if (type != "object") {
-            throw"YnTree 第二个参数必须是一个对象！"
-        }
-        this.options = options;
+
+        this.options = {
+            onchange,
+            checkStrictly,
+            data,
+            configs: {
+                hideCheckBox,
+                spread,
+                spreadChecked,
+            }
+        };
 
         !this.options.data ? (this.options.data = []) : "";
         if (YnTree.getType(this.options.data) == "object") {
@@ -82,9 +87,9 @@
     };
     YnTree.prototype._createDom = function (data, parent) {
         var that = this;
-        var spread = this.configs.spread;
-        var spreadChecked = this.configs.spreadChecked;
-        var hideCheckBox = this.configs.hideCheckBox;
+        var spread = this.options.configs.spread;
+        var spreadChecked = this.options.configs.spreadChecked;
+        var hideCheckBox = this.options.configs.hideCheckBox;
         YnTree.forEach(data, function (index, item) {
             var html = "", id = "yn_tree_input" + ++inputCount + '_' + uniqueFlag, nameVal = item.name ? item.name : "",
                 val = item.value ? item.value : "", checked = item.checked ? item.checked : false,
@@ -384,7 +389,7 @@
             return this
         }, select: function (flag, {down = true, up = true}) {
             var that = this, input = document.getElementById(that.id), ynTree = this.getYnTree(this.ynTreeId),
-                spreadChecked = ynTree.configs.spreadChecked, spread = ynTree.configs.spread;
+                spreadChecked = ynTree.options.configs.spreadChecked, spread = ynTree.options.configs.spread;
             flag = !!flag;
             if (!that.disabled) {
                 that.checked = flag;
