@@ -130,4 +130,4 @@
     
 3、效果
 --------
-![Image text](https://wenruns.github.io/tree/3ED58F30-0FF4-44dd-BED9-C67D81C6E483.png)
+![效果截图](https://wenruns.github.io/tree/3ED58F30-0FF4-44dd-BED9-C67D81C6E483.png)
