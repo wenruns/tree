@@ -44,8 +44,8 @@
         this.parallel = [];
         this.id = "yn_tree" + (++count) + "_" + uniqueFlag;
         this.tree = YnTree.createDomByString('<ul class="yn-tree" id="' + this.id + '"></ul>');
-        // this._init()
-        console.log(this._init());
+        this._init()
+        // console.log(this._init());
     }
 
     /**
